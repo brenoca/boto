@@ -11,4 +11,5 @@ Boto is a platform where non-developers can build their own logic using pre-buil
 
 Users can drag and drop blocks using Boto's UI in order to build their own automations
 
+![](boto_2.gif)
 
