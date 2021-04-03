@@ -1,0 +1,7 @@
+{
+  "type": "component",
+  "meta": {
+    "docsUrl": "todo"
+  },
+  "props": {}
+}

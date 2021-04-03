@@ -1,0 +1,52 @@
+{
+  "name": "@hipsjs/flowy-vue",
+  "version": "1.0.13",
+  "description": "Shopify draggable for Vue",
+  "main": "./dist/lib/flowy-vue.common.js",
+  "private": false,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build:all": "npm run build:lib && npm run build:lib && npm run build:gh-pages",
+    "build:demo": "vue-cli-service build --dest dist/demo",
+    "build:gh-pages": "vue-cli-service build --dest docs",
+    "build:lib": "vue-cli-service build --target lib --dest dist/lib --name flowy-vue 'src/index.js' && npm run build:copy-api-files",
+    "build:copy-api-files": "copyfiles -f src/components/*.json dist/lib",
+    "lint": "npx eslint --ext .js,.vue src *.js",
+    "release": "bash scripts/release.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remcoplasmeyer/flowy-vue.git"
+  },
+  "files": [
+    "dist/lib"
+  ],
+  "author": "Remco Plasmeijer <remco.plasmeijer@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/remcoplasmeyer/flowy-vue/issues"
+  },
+  "peerDependencies": {
+    "vue": "~2"
+  },
+  "dependencies": {
+    "@hipsjs/shopify-draggable-vue": "^1.0.7",
+    "lodash": "^4.17.15",
+    "vue-js-modal": "^2.0.0-rc.6"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "4.4.1",
+    "@vue/cli-plugin-eslint": "4.4.1",
+    "@vue/cli-service": "4.4.1",
+    "@vue/eslint-config-airbnb": "5.0.2",
+    "babel-eslint": "10.1.0",
+    "copyfiles": "^2.3.0",
+    "core-js": "3.6.5",
+    "eslint": "7.1.0",
+    "eslint-plugin-vue": "6.2.2",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
+    "vue": "2.6.11",
+    "vue-template-compiler": "2.6.11"
+  }
+}
