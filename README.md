@@ -10,11 +10,11 @@ Boto is a platform where non-developers can build their own logic using pre-buil
 
 Users can drag and drop blocks using Boto's UI in order to build their own automations
 
-Using boto, someone that has a loan in AAVE could automatically check their helaf factor to make sure they never go below 1 and avoid liquidation fees (5% to 10%) due to being undercolateralized
+Using Boto, someone that has a loan in AAVE could automatically check their health factor to make sure it never goes below 1 and avoid liquidation fees (5% to 10%) due to being under collateralized
 
-If the health factor hits a specifc trashold set by the user, they can automatically liquidate part o their loan or top up their collateral to improve their health factor
+If the health factor hits a specific threshold set by the user, they can automatically repay part o their loan or top up their collateral to improve their health factor
 
-They can also add to their logic the price of gas from a chainlink node to decide if they want to top up or liquidate, since each operation has a different gas cost
+They can also add to their logic the price of gas from a Chainlink node to decide if they want to top up or repay, since each operation has a different gas cost
 
 The combinations are endless and we are just starting!
 
