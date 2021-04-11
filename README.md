@@ -23,8 +23,7 @@ The combinations are endless and we are just starting!
 # Block Marketplace
 
 Boto is not only for non-developers
-With Boto developers can create their on blocks, to be used by themselves and other for automation
-By sharing blocks, developers can get remunerated based on the popularity of their blocks
+With Boto, developers can create their own blocks share with the community and get remunerated based on the popularity of their blocks
 
 # Socializing Bots
 
