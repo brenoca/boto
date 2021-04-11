@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <div class="h-screen w-screen bg-gray-200 flex flex-col flex-no-wrap overflow-none">
     <div id="navigation">
@@ -15,7 +16,7 @@
         </div>
         <div id="buttonsright">
             <div id="discard" @click="deleteBlocks">Discard</div>
-            <div id="publish">Deploy</div>
+            <div id="publish" @click="openMetamask">Deploy</div>
         </div>
     </div>
     <div id="leftcard">
@@ -60,7 +61,7 @@
             Chainlink Hackathon 2021
         </div>
     </div>
-    <div id="canvas">
+    <div id="canvas" v-if="step === 0">
       <div class="flex-grow overflow-auto">
         <flowy
           class="h-full w-full p-6"
@@ -75,19 +76,72 @@
         ></flowy>
       </div>
     </div>
+    <div class="overflow-x-auto ml-6 p-4" style="margin: 60px 0 0 360px" v-if="step === 1">
+      <div class="flex items-center font-sans overflow-hidden">
+        <div class="w-full">
+          <div class="bg-white shadow-md rounded my-6">
+            <table class="min-w-max w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Job</th>
+                        <th class="py-3 px-6 text-left">Type</th>
+                        <th class="py-3 px-6 text-center">Status</th>
+                        <th class="py-3 px-6 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">
+                          <div class="flex items-center">
+                              <div class="mr-2">
+                                <img width="20" style="opacity: 0.3" src="/assets/clipboard.png" />
+                              </div>
+                              <span class="font-medium">JOB0001</span>
+                          </div>
+                        </td>
+                        <td class="py-3 px-6 text-left">
+                            <div class="flex items-center">
+                                <span>BTC Loan with Repayment</span>
+                            </div>
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            <span class="bg-green-200 text-purple-600 py-1 px-3 rounded-full text-xs">Live</span>
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            <div class="flex item-center justify-center">
+                                <div @click="showJobLog" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </div>
+                                <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="bg-white shadow-md rounded my-6 p-4" v-if="showJobDetails">
+                  <div><span class="font-semibold">Job initiatied</span> on <span class="font-medium">25th Apr 2021, 15:43 GMT</span></div>
+                  <div v-if="jobStep1" class="mt-2 text-blue-400"><span class="font-semibold">Take Loan</span> action executed on <span class="font-medium">25th Apr 2021, 16:43 GMT</span></div>
+                  <div v-if="jobStep2" class="mt-2 text-blue-400"><span class="font-semibold">Repay Loan</span> action executed on <span class="font-medium">25th Apr 2021, 17:21 GMT</span></div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-/* eslint-disable vue/no-unused-components */
-/* eslint-disable no-unused-vars */
-import Vue from 'vue';
-import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import generateId from './lib/generateId';
 import nodes from './demo_data/simple';
 import blocks from './demo_data/sampleBlocks';
-
 
 export default {
   name: 'app',
@@ -100,6 +154,10 @@ export default {
     blocks,
     nodes,
     newDraggingBlock: null,
+    step: 0,
+    showJobDetails: false,
+    jobStep1: false,
+    jobStep2: false,
   }),
   methods: {
     onDragStartNewBlock(event) {
@@ -110,17 +168,15 @@ export default {
       console.log('onDragStopNewBlock', event);
       this.newDraggingBlock = null;
     },
-    onDropBlock(_event) {
+    onDropBlock() {
     },
     beforeAdd() {
-      console.log('before add');
       return true;
     },
     afterAdd() {
 
     },
-    onEnterDrop(event) {
-      console.log('entered drop');
+    onEnterDrop() {
       return true;
     },
     beforeMove({ to, from }) {
@@ -166,12 +222,46 @@ export default {
           data: {
             width: 420,
             text: 'Parent block',
-            title: 'Job',
+            title: 'JOB00001',
             description: 'Execute <span class="font-bold">once</span>',
             icon: 'eyeblue',
           },
         },
       ];
+    },
+    showJobLog() {
+      this.showJobDetails = !this.showJobDetails;
+      setTimeout(() => {
+        this.jobStep1 = true;
+        setTimeout(() => {
+          this.jobStep2 = true;
+        }, 3000);
+      }, 2000);
+    },
+    openMetamask() {
+      console.log('window.ethereum', window.ethereum);
+      const params = [
+        {
+          from: '0x3D731445A255dBEdFC2d0B995538CC8bBd30c8f0',
+          to: '0xd46e8dd67c5d32be8058bb8eb970870f07244567',
+          gas: '0x76c0', // 30400
+          gasPrice: '0x9184e72a000', // 10000000000000
+          value: '0x9184e72a', // 2441406250
+          data:
+            '0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675',
+        },
+      ];
+      window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params,
+      })
+        .then((result) => {
+          this.step = 1;
+          console.log('result', result);
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
     },
     onDragStart(event) {
       console.log('onDragStart', event);

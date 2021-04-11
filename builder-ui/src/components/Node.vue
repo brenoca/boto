@@ -12,7 +12,17 @@
             {{ title }}
           </div>
         </div>
-        <modal name="job">
+        <div @click.stop="dropdown = !dropdown">
+          <flowy-drag-handle>
+            <img :src="`assets/grabme.svg`" />
+          </flowy-drag-handle>
+          <div class="absolute z-50 -ml-10 py-2 bg-white shadow rounded text-xs" v-show="dropdown">
+            <span class="cursor-pointer p-2 hover:bg-gray-200" @click="remove()">remove</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <modal name="job00001" style="z-index: 9999">
           <div class="min-h-screen bg-gray-100 py-6 flex flex-col sm:py-12">
             <div class="max-w-md mx-auto">
                   <div class="text-base leading-6 space-y-4 text-gray-700 sm:text-lg">
@@ -28,22 +38,21 @@
                             <option>Every day</option>
                           </select>
                         </div>
-                        <!--<input type="text" class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600" placeholder="Event title">-->
                       </div>
                     <div class="pt-4 flex items-center space-x-4">
-                        <button @click="closeModal('job')" class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
+                        <button @click="closeModal('job00001')" class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
                           <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> Cancel
                         </button>
-                        <button @click="closeModal('job')" class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">Save</button>
+                        <button @click="closeModal('job00001')" class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">Save</button>
                     </div>
                   </div>
                 </div>
           </div>
         </modal>
         <modal name="takebtcloan">
-          <div class="min-h-screen bg-gray-100 py-6 flex flex-col sm:py-12">
-            <div class="max-w-md mx-auto">
+          <div class="min-h-screen bg-gray-100 py-6 flex flex-col sm:py-12" style="z-index: 99999999">
+            <div class="max-w-md mx-auto" style="z-index: 99999999">
                   <div class="text-base leading-6 space-y-4 text-gray-700 sm:text-lg">
                       <div class="flex flex-col">
                         <label class="leading-loose">Criteria</label>
@@ -68,17 +77,6 @@
                 </div>
           </div>
         </modal>
-        <div @click.stop="dropdown = !dropdown">
-          <flowy-drag-handle>
-            <img :src="`assets/grabme.svg`" />
-          </flowy-drag-handle>
-          <div class="absolute z-50 -ml-10 py-2 bg-white shadow rounded text-xs" v-show="dropdown">
-            <span class="cursor-pointer p-2 hover:bg-gray-200" @click="remove()">remove</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="flex flex-row flex-no-wrap ml-4 mb-4">
       <div class="flex-grow flex flex-col">
         <div class="mt-2 text-sm text-gray-700" v-html="description">
@@ -146,6 +144,7 @@ export default {
     },
     closeModal(type) {
       this.$modal.hide(type.replace(/\s/g, '').toLowerCase());
+      this.executed = false;
     },
   },
 };

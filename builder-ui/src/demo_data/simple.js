@@ -6,7 +6,7 @@ module.exports = [
     data: {
       width: 320,
       text: 'Parent block',
-      title: 'Job',
+      title: 'JOB00001',
       description: 'Execute <span class="font-bold">once</span>',
       icon: 'eyeblue',
     },
